@@ -1,0 +1,9 @@
+---
+- name: Deploy NTP Configuration
+  hosts: switches
+  gather_facts: false
+  collections:
+    - arista.eos
+
+  roles:
+    - ntp_config

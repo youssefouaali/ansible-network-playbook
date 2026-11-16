@@ -1,0 +1,9 @@
+---
+all:
+  children:
+    routers:
+      hosts:
+        router1:
+    switches:
+      hosts:
+        switch1:

@@ -1,0 +1,20 @@
+name : jinja2-lab
+
+topology:
+  kinds :
+    arista_ceos :
+      image: ceos:latest
+
+  nodes :
+    switch1:
+      kind: arista_ceos
+      mgmt-ipv4: 172.20.20.11
+    router1:
+      kind: arista_ceos
+      mgmt-ipv4: 172.20.20.10
+      ports:
+       - 2001:22
+
+  links:
+    
+    - endpoints: ["switch1:eth1", "router1:eth1"]

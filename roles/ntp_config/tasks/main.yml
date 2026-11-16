@@ -1,0 +1,23 @@
+---
+- name: Configure NTP servers
+  arista.eos.eos_config:
+    lines:
+      - "ntp server {{ item }}"
+  loop: "{{ ntp_servers }}"
+  register: ntp_push
+
+- name: Save running config if changes were made
+  arista.eos.eos_config:
+    save_when: changed
+  when: ntp_push.changed
+
+- name: Verify NTP configuration
+  arista.eos.eos_command:
+    commands:
+      - show ntp status
+      - show ntp associations
+  register: ntp_config
+
+- name: Display NTP configuration
+  ansible.builtin.debug:
+    var: ntp_config.stdout_lines

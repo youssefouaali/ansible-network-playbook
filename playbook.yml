@@ -1,0 +1,28 @@
+---
+- name : configure ntp servers on arista switches
+  hosts : router1 , switch1
+  gather_facts : false
+  collections:
+    - arista.eos
+
+  tasks:
+    - name: configure ntp servers
+      arista.eos.eos_config:
+        lines:
+          - ntp server 10.0.0.1
+          - ntp server 10.0.0.2
+
+    - name: save running config if changes were made
+      arista.eos.eos_config:
+        save_when: changed
+
+    - name: verify ntp configuration
+      arista.eos.eos_command:
+        commands:
+          - show ntp status
+          - show ntp associations
+      register: ntp_config
+
+    - name: display ntp configuration
+      ansible.builtin.debug:
+        var: ntp_config.stdout_lines
